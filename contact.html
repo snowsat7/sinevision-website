@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us - SineVision</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> <!-- Font Awesome for icons -->
+  <style>
+      /* Optional: Add specific styles for the contact page if needed */
+      .contact-info {
+          text-align: center;
+          margin-bottom: 2rem;
+      }
+      .contact-info i {
+          color: var(--primary-color);
+          margin-right: 0.5rem;
+      }
+      .contact-info a {
+          color: var(--secondary-color);
+          text-decoration: none;
+          transition: color 0.3s ease;
+      }
+      .contact-info a:hover {
+          color: var(--primary-color);
+      }
+      /* Basic form styling (expand as needed) */
+      .contact-form {
+          max-width: 600px;
+          margin: 2rem auto 0 auto;
+          padding: 2rem;
+          background-color: var(--card-background);
+          border-radius: 12px;
+          border: 1px solid var(--border-color);
+      }
+      .form-group {
+          margin-bottom: 1.5rem;
+      }
+      .form-group label {
+          display: block;
+          margin-bottom: 0.5rem;
+          color: var(--secondary-color);
+          font-weight: 500;
+      }
+      .form-group input,
+      .form-group textarea {
+          width: 100%;
+          padding: 0.8rem 1rem;
+          background-color: var(--background-color);
+          border: 1px solid var(--border-color);
+          border-radius: 8px;
+          color: var(--text-color);
+          font-size: 1rem;
+          font-family: 'Poppins', sans-serif;
+      }
+      .form-group textarea {
+          min-height: 150px;
+          resize: vertical;
+      }
+      .form-group input:focus,
+      .form-group textarea:focus {
+          outline: none;
+          border-color: var(--primary-color);
+          box-shadow: 0 0 8px rgba(106, 250, 255, 0.3);
+      }
+       .submit-button {
+            display: block;
+            width: 100%; /* Full width button */
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            text-align: center;
+        }
+
+        .submit-button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo">SineVision</a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="features.html">Features</a>
+      <a href="about.html">About</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <div class="page-header">
+      <h1>Get In Touch</h1>
+      <p>Have questions, need a demo, or interested in partnering? Reach out!</p>
+  </div>
+
+  <div class="container">
+
+    <section class="section" id="contact-details">
+        <!-- Removed section title, header is sufficient -->
+         <div class="contact-info">
+             <p><i class="fas fa-envelope"></i> Email us at: <a href="mailto:hello@sinevision.app">hello@sinevision.app</a></p>
+             <p><i class="fab fa-discord"></i> Join our community: <a href="#" target="_blank" rel="noopener noreferrer">Discord Server</a> (Link Coming Soon)</p>
+             <!-- Add more contact methods if needed, e.g., phone, address -->
+         </div>
+
+         <div class="contact-form">
+             <h3 style="text-align: center; margin-bottom: 2rem; color: var(--primary-color);">Send us a Message</h3>
+             <!-- Basic Form Structure - Needs Backend/Service to function -->
+             <form action="#" method="POST"> <!-- Replace # with your form handler URL -->
+                 <div class="form-group">
+                     <label for="name">Your Name</label>
+                     <input type="text" id="name" name="name" required>
+                 </div>
+                 <div class="form-group">
+                     <label for="email">Your Email</label>
+                     <input type="email" id="email" name="email" required>
+                 </div>
+                  <div class="form-group">
+                     <label for="subject">Subject</label>
+                     <input type="text" id="subject" name="subject">
+                 </div>
+                 <div class="form-group">
+                     <label for="message">Message</label>
+                     <textarea id="message" name="message" required></textarea>
+                 </div>
+                 <button type="submit" class="submit-button">Send Message</button>
+             </form>
+         </div>
+    </section>
+
+  </div> <!-- /container -->
+
+  <footer>
+    <p>&copy; 2025 SineVision. Team SK44. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <!-- Note: Form submission requires backend logic or a service like Formspree, Netlify Forms, etc. -->
+</body>
+</html>
