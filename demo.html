@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SineVision - AI Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .demo-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .input-section {
+      margin-bottom: 2rem;
+    }
+    
+    .textarea-container {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+    
+    #script-input {
+      width: 100%;
+      min-height: 200px;
+      padding: 1rem;
+      background-color: var(--card-background);
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-family: 'Poppins', sans-serif;
+      resize: vertical;
+      transition: border-color 0.3s ease;
+    }
+    
+    #script-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 10px rgba(106, 250, 255, 0.2);
+    }
+    
+    .char-count {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    
+    .output-section {
+      display: none;
+      margin-top: 3rem;
+    }
+    
+    .output-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    
+    .video-container {
+      background-color: var(--card-background);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      height: 350px;
+    }
+    
+    .storyboard-container {
+      background-color: var(--card-background);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid var(--border-color);
+      height: 350px;
+      overflow-y: auto;
+    }
+    
+    .storyboard-frame {
+      display: flex;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .frame-image {
+      width: 150px;
+      height: 100px;
+      background-color: #333;
+      margin-right: 1rem;
+      flex-shrink: 0;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+    
+    .frame-details {
+      flex-grow: 1;
+    }
+    
+    .frame-details h4 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .frame-details p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    
+    .loading-spinner {
+      display: none;
+      text-align: center;
+      margin: 2rem 0;
+    }
+    
+    .spinner {
+      border: 5px solid var(--border-color);
+      border-top: 5px solid var(--primary-color);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .sample-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .sample-button {
+      background-color: var(--card-background);
+      color: var(--primary-color);
+      border: 1px solid var(--border-color);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .sample-button:hover {
+      background-color: var(--border-color);
+    }
+    
+    @media (max-width: 768px) {
+      .output-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo">SineVision</a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="features.html">Features</a>
+      <a href="demo.html" class="active">Demo</a>
+      <a href="about.html">About</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <section class="page-header">
+    <h1>Interactive Demo</h1>
+    <p>Experience the power of AI-driven script visualization in action</p>
+  </section>
+
+  <div class="demo-container">
+    <section class="section" id="demo-intro">
+      <h2 class="section-title">Text to Video & Storyboard</h2>
+      <p style="text-align: center; max-width: 800px; margin: 0 auto 2rem auto; color: var(--text-muted);">
+        Enter your script or scenario below and watch as our AI transforms it into a visual storyboard and video preview.
+      </p>
+      
+      <div class="input-section">
+        <h3 style="margin-bottom: 1rem; color: var(--secondary-color);">Try these examples or write your own:</h3>
+        <div class="sample-buttons">
+          <button class="sample-button" data-sample="A detective walks through a rainy alleyway, his silhouette barely visible in the darkness. He stops suddenly, hearing footsteps behind him.">Detective Scene</button>
+          <button class="sample-button" data-sample="A spacecraft hovers above a desolate alien landscape. Three astronauts exit the ship and begin setting up research equipment.">Sci-Fi Scene</button>
+          <button class="sample-button" data-sample="Two friends sit at a cafe, laughing over coffee. One of them gets a phone call and their expression turns serious.">Drama Scene</button>
+        </div>
+        
+        <div class="textarea-container">
+          <textarea id="script-input" placeholder="Enter your script or scenario here..."></textarea>
+          <div class="char-count">0/500</div>
+        </div>
+        
+        <button id="generate-btn" class="cta-button">Generate Visualization</button>
+      </div>
+      
+      <div class="loading-spinner" id="loading-spinner">
+        <div class="spinner"></div>
+        <p style="margin-top: 1rem; color: var(--text-muted);">Processing your script with AI...</p>
+      </div>
+      
+      <div class="output-section" id="output-section">
+        <h3 style="margin-bottom: 2rem; color: var(--secondary-color); text-align: center;">Your Visualization Results</h3>
+        
+        <div class="output-grid">
+          <div class="video-container">
+            <video id="preview-video" width="100%" height="100%" controls>
+              <source src="" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          
+          <div class="storyboard-container" id="storyboard-container">
+            <!-- Storyboard frames will be inserted here by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 SineVision. Team SK44. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const scriptInput = document.getElementById('script-input');
+      const charCount = document.querySelector('.char-count');
+      const generateBtn = document.getElementById('generate-btn');
+      const loadingSpinner = document.getElementById('loading-spinner');
+      const outputSection = document.getElementById('output-section');
+      const previewVideo = document.getElementById('preview-video');
+      const storyboardContainer = document.getElementById('storyboard-container');
+      const sampleButtons = document.querySelectorAll('.sample-button');
+      
+      // Character counter
+      scriptInput.addEventListener('input', () => {
+        const count = scriptInput.value.length;
+        charCount.textContent = `${count}/500`;
+        
+        if (count > 500) {
+          charCount.style.color = 'red';
+        } else {
+          charCount.style.color = 'var(--text-muted)';
+        }
+      });
+      
+      // Sample button click
+      sampleButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          scriptInput.value = button.getAttribute('data-sample');
+          charCount.textContent = `${scriptInput.value.length}/500`;
+        });
+      });
+      
+      // Generate button click
+      generateBtn.addEventListener('click', () => {
+        if (scriptInput.value.trim() === '') {
+          alert('Please enter a script or scenario first.');
+          return;
+        }
+        
+        // Show loading spinner, hide output
+        loadingSpinner.style.display = 'block';
+        outputSection.style.display = 'none';
+        
+        // Simulate AI processing with timeout
+        setTimeout(() => {
+          generateVisualization(scriptInput.value);
+          
+          // Hide loading spinner, show output
+          loadingSpinner.style.display = 'none';
+          outputSection.style.display = 'block';
+          
+          // Scroll to output
+          outputSection.scrollIntoView({ behavior: 'smooth' });
+        }, 3000); // 3 second delay to simulate processing
+      });
+      
+      // Function to generate visualization
+      function generateVisualization(script) {
+        // Set a sample video (placeholder)
+        previewVideo.src = 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+        previewVideo.load();
+        
+        // Clear previous storyboard
+        storyboardContainer.innerHTML = '';
+        
+        // Generate storyboard frames based on script
+        const frameCount = 4 + Math.floor(Math.random() * 3); // 4-6 frames
+        const sentences = script.split(/[.!?]+/).filter(s => s.trim().length > 0);
+        
+        for (let i = 0; i < frameCount; i++) {
+          const frameElement = document.createElement('div');
+          frameElement.className = 'storyboard-frame';
+          
+          const frameNumber = i + 1;
+          const sceneText = sentences[i % sentences.length] || script.substring(0, 50) + '...';
+          
+          frameElement.innerHTML = `
+            <div class="frame-image">Frame ${frameNumber}</div>
+            <div class="frame-details">
+              <h4>Scene ${frameNumber}</h4>
+              <p>${sceneText}</p>
+            </div>
+          `;
+          
+          storyboardContainer.appendChild(frameElement);
+        }
+      }
+    });
+  </script>
+</body>
+</html> 
