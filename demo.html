@@ -71,45 +71,54 @@
     .storyboard-container {
       background-color: var(--card-background);
       border-radius: 12px;
-      padding: 1.5rem;
+      padding: 1rem;
       border: 1px solid var(--border-color);
       height: 350px;
       overflow-y: auto;
     }
     
-    .storyboard-frame {
-      display: flex;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid var(--border-color);
+    .storyboard-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 0.5rem;
+      height: 100%;
     }
     
-    .frame-image {
-      width: 150px;
-      height: 100px;
+    .storyboard-frame {
       background-color: #333;
-      margin-right: 1rem;
-      flex-shrink: 0;
       border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-muted);
-      font-size: 0.8rem;
+      border: 1px solid var(--border-color);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .frame-number {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      background-color: rgba(0,0,0,0.7);
+      color: var(--primary-color);
+      font-size: 0.7rem;
+      padding: 2px 5px;
+      border-radius: 3px;
     }
     
     .frame-details {
-      flex-grow: 1;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(0,0,0,0.7);
+      padding: 3px 6px;
+      font-size: 0.6rem;
+      color: var(--text-color);
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
     }
     
-    .frame-details h4 {
-      font-size: 1rem;
-      margin-bottom: 0.5rem;
-    }
-    
-    .frame-details p {
-      font-size: 0.9rem;
-      color: var(--text-muted);
+    .storyboard-frame:hover .frame-details {
+      transform: translateY(0);
     }
     
     .loading-spinner {
@@ -153,9 +162,109 @@
       background-color: var(--border-color);
     }
     
+    .file-upload {
+      margin-bottom: 1.5rem;
+    }
+    
+    .file-upload-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      color: var(--secondary-color);
+    }
+    
+    .file-input-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    
+    .file-input {
+      opacity: 0;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+    
+    .file-input-button {
+      padding: 0.6rem 1.2rem;
+      background-color: var(--card-background);
+      color: var(--primary-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .file-input-button:hover {
+      background-color: var(--border-color);
+    }
+    
+    .file-name {
+      margin-left: 1rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    
+    .or-divider {
+      display: flex;
+      align-items: center;
+      margin: 1.5rem 0;
+      color: var(--text-muted);
+    }
+    
+    .or-divider::before,
+    .or-divider::after {
+      content: "";
+      flex-grow: 1;
+      height: 1px;
+      background-color: var(--border-color);
+      margin: 0 1rem;
+    }
+    
+    .technique-recommendations {
+      margin-top: 2rem;
+      background-color: var(--card-background);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid var(--border-color);
+    }
+    
+    .technique-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+    
+    .technique-card {
+      background-color: rgba(0, 0, 0, 0.2);
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+    
+    .technique-card h4 {
+      color: var(--primary-color);
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .technique-card p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    
     @media (max-width: 768px) {
-      .output-grid {
+      .output-grid,
+      .technique-grid {
         grid-template-columns: 1fr;
+      }
+      
+      .storyboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(4, 1fr);
       }
     }
   </style>
@@ -183,10 +292,21 @@
     <section class="section" id="demo-intro">
       <h2 class="section-title">Text to Video & Storyboard</h2>
       <p style="text-align: center; max-width: 800px; margin: 0 auto 2rem auto; color: var(--text-muted);">
-        Enter your script or scenario below and watch as our AI transforms it into a visual storyboard and video preview.
+        Upload a script file or enter your scenario below and watch as our AI transforms it into a visual storyboard and video preview.
       </p>
       
       <div class="input-section">
+        <div class="file-upload">
+          <label class="file-upload-label">Upload your script file:</label>
+          <div class="file-input-container">
+            <input type="file" id="script-file" class="file-input" accept=".txt,.pdf,.docx,.rtf,.fountain">
+            <button class="file-input-button">Choose File</button>
+            <span class="file-name" id="file-name">No file chosen</span>
+          </div>
+        </div>
+        
+        <div class="or-divider">OR</div>
+        
         <h3 style="margin-bottom: 1rem; color: var(--secondary-color);">Try these examples or write your own:</h3>
         <div class="sample-buttons">
           <button class="sample-button" data-sample="A detective walks through a rainy alleyway, his silhouette barely visible in the darkness. He stops suddenly, hearing footsteps behind him.">Detective Scene</button>
@@ -218,8 +338,19 @@
             </video>
           </div>
           
-          <div class="storyboard-container" id="storyboard-container">
-            <!-- Storyboard frames will be inserted here by JavaScript -->
+          <div class="storyboard-container">
+            <div class="storyboard-grid" id="storyboard-grid">
+              <!-- Storyboard frames will be inserted here by JavaScript -->
+            </div>
+          </div>
+        </div>
+        
+        <div class="technique-recommendations" id="technique-recommendations">
+          <h3 style="color: var(--secondary-color);">Recommended Filming Techniques</h3>
+          <p style="color: var(--text-muted); margin-bottom: 1rem;">Based on your script, our AI suggests the following techniques:</p>
+          
+          <div class="technique-grid" id="technique-grid">
+            <!-- Technique recommendations will be inserted here by JavaScript -->
           </div>
         </div>
       </div>
@@ -234,13 +365,31 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const scriptInput = document.getElementById('script-input');
+      const scriptFile = document.getElementById('script-file');
+      const fileName = document.getElementById('file-name');
       const charCount = document.querySelector('.char-count');
       const generateBtn = document.getElementById('generate-btn');
       const loadingSpinner = document.getElementById('loading-spinner');
       const outputSection = document.getElementById('output-section');
       const previewVideo = document.getElementById('preview-video');
-      const storyboardContainer = document.getElementById('storyboard-container');
+      const storyboardGrid = document.getElementById('storyboard-grid');
+      const techniqueGrid = document.getElementById('technique-grid');
       const sampleButtons = document.querySelectorAll('.sample-button');
+      
+      // File input change
+      scriptFile.addEventListener('change', () => {
+        if (scriptFile.files.length > 0) {
+          fileName.textContent = scriptFile.files[0].name;
+        } else {
+          fileName.textContent = 'No file chosen';
+        }
+      });
+      
+      // File input button click simulation
+      document.querySelector('.file-input-button').addEventListener('click', (e) => {
+        e.preventDefault();
+        scriptFile.click();
+      });
       
       // Character counter
       scriptInput.addEventListener('input', () => {
@@ -264,8 +413,8 @@
       
       // Generate button click
       generateBtn.addEventListener('click', () => {
-        if (scriptInput.value.trim() === '') {
-          alert('Please enter a script or scenario first.');
+        if (scriptFile.files.length === 0 && scriptInput.value.trim() === '') {
+          alert('Please enter a script or upload a file first.');
           return;
         }
         
@@ -275,7 +424,11 @@
         
         // Simulate AI processing with timeout
         setTimeout(() => {
-          generateVisualization(scriptInput.value);
+          const scriptContent = scriptFile.files.length > 0 
+            ? `Content from ${scriptFile.files[0].name}` 
+            : scriptInput.value;
+            
+          generateVisualization(scriptContent);
           
           // Hide loading spinner, show output
           loadingSpinner.style.display = 'none';
@@ -293,29 +446,81 @@
         previewVideo.load();
         
         // Clear previous storyboard
-        storyboardContainer.innerHTML = '';
+        storyboardGrid.innerHTML = '';
         
-        // Generate storyboard frames based on script
-        const frameCount = 4 + Math.floor(Math.random() * 3); // 4-6 frames
+        // Generate 8 storyboard frames
+        const frameTypes = [
+          'Wide Shot', 'Close-Up', 'Medium Shot', 'Over The Shoulder',
+          'POV Shot', 'Tracking Shot', 'Aerial View', 'Dolly Zoom'
+        ];
+        
         const sentences = script.split(/[.!?]+/).filter(s => s.trim().length > 0);
         
-        for (let i = 0; i < frameCount; i++) {
+        for (let i = 0; i < 8; i++) {
           const frameElement = document.createElement('div');
           frameElement.className = 'storyboard-frame';
           
           const frameNumber = i + 1;
-          const sceneText = sentences[i % sentences.length] || script.substring(0, 50) + '...';
+          const frameType = frameTypes[i];
+          const sceneText = sentences[i % sentences.length] || script.substring(0, 30) + '...';
+          
+          // Generate a darker shade for the frame background based on index
+          const shade = 15 + (i * 2);
+          frameElement.style.backgroundColor = `hsl(0, 0%, ${shade}%)`;
           
           frameElement.innerHTML = `
-            <div class="frame-image">Frame ${frameNumber}</div>
+            <span class="frame-number">${frameNumber}</span>
             <div class="frame-details">
-              <h4>Scene ${frameNumber}</h4>
-              <p>${sceneText}</p>
+              <strong>${frameType}</strong><br>
+              ${sceneText.substring(0, 50)}${sceneText.length > 50 ? '...' : ''}
             </div>
           `;
           
-          storyboardContainer.appendChild(frameElement);
+          storyboardGrid.appendChild(frameElement);
         }
+        
+        // Clear previous techniques
+        techniqueGrid.innerHTML = '';
+        
+        // Generate technique recommendations
+        const techniques = [
+          {
+            category: 'Camera',
+            suggestion: 'Consider using a handheld camera for more dynamic, immediate feel. For emotional scenes, use steady shots to focus on character expressions.'
+          },
+          {
+            category: 'Lighting',
+            suggestion: 'Low-key lighting with strong contrast to create dramatic shadows. Use practical light sources within the scene for natural effect.'
+          },
+          {
+            category: 'Sound',
+            suggestion: 'Ambient background noise mixed with subtle score. Consider diegetic sound sources to enhance realism and scene tension.'
+          },
+          {
+            category: 'Color Grading',
+            suggestion: 'Cool blue tones for exterior scenes, warmer orange hues for interior emotional moments. Consider desaturation for flashback sequences.'
+          },
+          {
+            category: 'Editing',
+            suggestion: 'Slower cuts for contemplative moments, quick cuts during action. Consider match cuts between related scenes for visual continuity.'
+          },
+          {
+            category: 'Composition',
+            suggestion: 'Use rule of thirds for balanced framing. Consider leading lines to draw attention to key elements in each shot.'
+          }
+        ];
+        
+        techniques.forEach(tech => {
+          const techElement = document.createElement('div');
+          techElement.className = 'technique-card';
+          
+          techElement.innerHTML = `
+            <h4>${tech.category}</h4>
+            <p>${tech.suggestion}</p>
+          `;
+          
+          techniqueGrid.appendChild(techElement);
+        });
       }
     });
   </script>
